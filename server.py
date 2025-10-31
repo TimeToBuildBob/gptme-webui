@@ -18,23 +18,23 @@ class SPAHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
         """Handle GET requests with SPA fallback."""
         # Get the requested path
         path = self.translate_path(self.path)
-        
+
         # If path is a directory, try index.html
         if os.path.isdir(path):
             index_path = os.path.join(path, 'index.html')
             if os.path.exists(index_path):
                 path = index_path
-        
+
         # If file doesn't exist and it's not an asset, serve index.html
         if not os.path.exists(path):
             # Check if this looks like an asset request
-            is_asset = any(self.path.endswith(ext) for ext in 
+            is_asset = any(self.path.endswith(ext) for ext in
                           ['.js', '.css', '.png', '.jpg', '.svg', '.ico', '.woff', '.woff2'])
-            
+
             if not is_asset:
                 # Serve index.html for SPA routes
                 self.path = '/index.html'
-        
+
         # Call parent handler
         return http.server.SimpleHTTPRequestHandler.do_GET(self)
 

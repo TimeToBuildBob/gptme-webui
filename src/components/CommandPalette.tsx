@@ -9,15 +9,7 @@ import {
   CommandList,
   CommandSeparator,
 } from './ui/command';
-import {
-  Settings,
-  Plus,
-  Search,
-  FileText,
-  Users,
-  Sparkles,
-  Home,
-} from 'lucide-react';
+import { Plus, Search, Home } from 'lucide-react';
 
 interface CommandAction {
   id: string;
@@ -83,30 +75,6 @@ export function CommandPalette() {
         group: 'Actions',
       },
       {
-        id: 'create-agent',
-        label: 'Create Agent',
-        description: 'Set up a new AI agent',
-        icon: <Sparkles className="mr-2 h-4 w-4" />,
-        keywords: ['agent', 'create', 'new', 'ai'],
-        action: () => {
-          navigate('/agents');
-          setOpen(false);
-        },
-        group: 'Actions',
-      },
-      {
-        id: 'settings',
-        label: 'Settings',
-        description: 'Configure application',
-        icon: <Settings className="mr-2 h-4 w-4" />,
-        keywords: ['settings', 'preferences', 'config'],
-        action: () => {
-          navigate('/settings');
-          setOpen(false);
-        },
-        group: 'Navigation',
-      },
-      {
         id: 'home',
         label: 'Home',
         description: 'Go to home page',
@@ -114,30 +82,6 @@ export function CommandPalette() {
         keywords: ['home', 'main'],
         action: () => {
           navigate('/');
-          setOpen(false);
-        },
-        group: 'Navigation',
-      },
-      {
-        id: 'workspaces',
-        label: 'Workspaces',
-        description: 'Manage workspaces',
-        icon: <FileText className="mr-2 h-4 w-4" />,
-        keywords: ['workspace', 'folder', 'project'],
-        action: () => {
-          navigate('/workspaces');
-          setOpen(false);
-        },
-        group: 'Navigation',
-      },
-      {
-        id: 'agents',
-        label: 'Agents',
-        description: 'View all agents',
-        icon: <Users className="mr-2 h-4 w-4" />,
-        keywords: ['agents', 'list', 'view'],
-        action: () => {
-          navigate('/agents');
           setOpen(false);
         },
         group: 'Navigation',
@@ -157,9 +101,7 @@ export function CommandPalette() {
       // Search in description
       if (action.description?.toLowerCase().includes(searchLower)) return true;
       // Search in keywords
-      return action.keywords.some((keyword) =>
-        keyword.toLowerCase().includes(searchLower)
-      );
+      return action.keywords.some((keyword) => keyword.toLowerCase().includes(searchLower));
     });
   }, [search, actions]);
 
@@ -202,9 +144,7 @@ export function CommandPalette() {
                   <div className="flex flex-col">
                     <span>{action.label}</span>
                     {action.description && (
-                      <span className="text-xs text-muted-foreground">
-                        {action.description}
-                      </span>
+                      <span className="text-xs text-muted-foreground">{action.description}</span>
                     )}
                   </div>
                 </CommandItem>

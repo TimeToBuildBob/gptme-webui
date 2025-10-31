@@ -1,17 +1,22 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { CommandPalette } from '../CommandPalette';
 
+// Mock ResizeObserver and scrollIntoView (not available in jsdom)
+globalThis.ResizeObserver = jest.fn().mockImplementation(() => ({
+  observe: jest.fn(),
+  unobserve: jest.fn(),
+  disconnect: jest.fn(),
+})) as any;
+
+Element.prototype.scrollIntoView = jest.fn();
+
 // Mock useNavigate
-const mockNavigate = vi.fn();
-vi.mock('react-router-dom', async () => {
-  const actual = await vi.importActual('react-router-dom');
-  return {
-    ...actual,
-    useNavigate: () => mockNavigate,
-  };
-});
+const mockNavigate = jest.fn();
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: () => mockNavigate,
+}));
 
 describe('CommandPalette', () => {
   beforeEach(() => {
@@ -19,7 +24,7 @@ describe('CommandPalette', () => {
   });
 
   afterEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
   });
 
   const renderCommandPalette = () => {
@@ -82,7 +87,7 @@ describe('CommandPalette', () => {
         metaKey: true,
         cancelable: true,
       });
-      const preventDefaultSpy = vi.spyOn(event, 'preventDefault');
+      const preventDefaultSpy = jest.spyOn(event, 'preventDefault');
 
       document.dispatchEvent(event);
 
