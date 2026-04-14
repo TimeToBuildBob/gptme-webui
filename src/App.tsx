@@ -10,24 +10,21 @@ import Index from './pages/Index';
 import Tasks from './pages/Tasks';
 import Workspace from './pages/Workspace';
 import { CommandPalette } from './components/CommandPalette';
+import { OnboardingScreen, isOnboardingComplete } from './components/OnboardingScreen';
 import type { FC } from 'react';
+import { useState, useEffect } from 'react';
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      // Disable automatic background refetching
       refetchOnWindowFocus: false,
       refetchOnMount: false,
       refetchOnReconnect: false,
-      // Reduce stale time to ensure updates are visible immediately
       staleTime: 0,
-      // Keep cached data longer
       gcTime: 1000 * 60 * 5,
-      // Ensure we get updates
       notifyOnChangeProps: 'all',
     },
     mutations: {
-      // Ensure mutations trigger immediate updates
       onSuccess: () => {
         queryClient.invalidateQueries();
       },
@@ -36,6 +33,27 @@ const queryClient = new QueryClient({
 });
 
 const App: FC = () => {
+  const [showOnboarding, setShowOnboarding] = useState(false);
+
+  useEffect(() => {
+    setShowOnboarding(!isOnboardingComplete());
+  }, []);
+
+  if (showOnboarding) {
+    return (
+      <SettingsProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <OnboardingScreen onComplete={() => setShowOnboarding(false)} />
+        </ThemeProvider>
+      </SettingsProvider>
+    );
+  }
+
   return (
     <SettingsProvider>
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
