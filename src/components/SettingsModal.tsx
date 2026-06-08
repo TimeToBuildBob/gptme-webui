@@ -11,18 +11,28 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
-import { Settings, Volume2, Palette, Info, FileText, ExternalLink } from 'lucide-react';
+import { Settings, Volume2, Palette, Info, FileText, ExternalLink, Rocket } from 'lucide-react';
 import { useSettings } from '@/contexts/SettingsContext';
 import { useTheme } from 'next-themes';
 import { cn } from '@/lib/utils';
+import { DeveloperDeploy } from './settings/DeveloperDeploy';
 
 interface SettingsModalProps {
   children?: React.ReactNode;
 }
 
-type SettingsCategory = 'appearance' | 'audio' | 'content' | 'about';
+type SettingsCategory = 'appearance' | 'audio' | 'content' | 'developer' | 'about';
 
-const categories = [
+interface SettingsCategoryDefinition {
+  id: SettingsCategory;
+  label: string;
+  icon: typeof Settings;
+  description: string;
+}
+
+const showDeveloperTools = import.meta.env.DEV || import.meta.env.VITE_ENABLE_DEV_TOOLS === 'true';
+
+const categories: SettingsCategoryDefinition[] = [
   {
     id: 'appearance' as const,
     label: 'Appearance',
@@ -41,6 +51,16 @@ const categories = [
     icon: FileText,
     description: 'Message and code display options',
   },
+  ...(showDeveloperTools
+    ? [
+        {
+          id: 'developer' as const,
+          label: 'Developer',
+          icon: Rocket,
+          description: 'Deploy and debugging actions',
+        },
+      ]
+    : []),
   {
     id: 'about' as const,
     label: 'About',
@@ -167,6 +187,9 @@ export const SettingsModal = forwardRef<HTMLButtonElement, SettingsModalProps>(
               </div>
             </div>
           );
+
+        case 'developer':
+          return <DeveloperDeploy />;
 
         case 'about':
           return (

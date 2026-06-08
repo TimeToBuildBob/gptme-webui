@@ -9,9 +9,9 @@ A fancy web UI for [gptme][gptme], built with [lovable.dev](https://lovable.dev)
 
 ## Features
 
- - Chat with LLMs using gptme, just like in the CLI, but with a fancy UI
- - Generate responses and run tools by connecting to your local gptme-server instance
- - Read bundled conversations without running gptme locally (useful for sharing)
+- Chat with LLMs using gptme, just like in the CLI, but with a fancy UI
+- Generate responses and run tools by connecting to your local gptme-server instance
+- Read bundled conversations without running gptme locally (useful for sharing)
 
 ## Usage
 
@@ -53,6 +53,24 @@ Available commands:
 - `npm run typecheck:watch` - Run type checking in watch mode
 - `npm run build` - Build for production (includes type checking)
 - `npm run lint` - Run linting and type checking
+
+### Developer staging deploy trigger
+
+The Developer settings panel can trigger a GitHub Actions staging deployment when the
+web UI is served by `server.py` and the deploy trigger is explicitly enabled:
+
+```sh
+npm run build
+GPTME_WEBUI_ENABLE_DEV_DEPLOY=true \
+GPTME_WEBUI_GITHUB_TOKEN=github_pat_with_actions_workflow_scope \
+GPTME_WEBUI_DEPLOY_REPOSITORY=gptme/gptme-webui \
+GPTME_WEBUI_DEPLOY_WORKFLOW=deploy.yml \
+GPTME_WEBUI_DEPLOY_REF=master \
+python3 server.py 5701
+```
+
+Optional `GPTME_WEBUI_DEPLOY_INPUTS_JSON='{"environment":"staging"}'` adds
+workflow inputs for staging workflows that declare them.
 
 ## Testing
 
