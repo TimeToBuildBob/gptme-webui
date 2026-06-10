@@ -443,6 +443,10 @@ export const ChatInput: FC<Props> = ({
         workspace: selectedWorkspace || undefined,
       });
       setMessage('');
+      // Clear localStorage draft since message was sent
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem(storageKey);
+      }
       // Reset textarea height to default by removing inline style
       if (textareaRef.current) {
         textareaRef.current.style.height = '';
