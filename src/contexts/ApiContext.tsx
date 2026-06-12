@@ -158,12 +158,10 @@ export function ApiProvider({
         // Update state
         api.setConnected(true);
 
-        // Refresh queries
+        // Refresh queries — invalidateQueries already marks all active queries as
+        // stale and triggers refetch for visible ones. The explicit refetchQueries
+        // below was redundant and caused double-fetches on connection.
         await queryClient.invalidateQueries();
-        await queryClient.refetchQueries({
-          queryKey: ['conversations'],
-          type: 'active',
-        });
 
         toast.success('Connected to gptme server');
       } catch (error) {
@@ -223,10 +221,6 @@ export function ApiProvider({
 
           // Refresh queries
           await queryClient.invalidateQueries();
-          await queryClient.refetchQueries({
-            queryKey: ['conversations'],
-            type: 'active',
-          });
 
           // Only show success toast if not the initial attempt
           if (!isInitialAttempt) {
