@@ -33,7 +33,7 @@ export const completeOnboarding = () => {
 export const OnboardingScreen: FC<Props> = ({ onComplete }) => {
   const [step, setStep] = useState<Step>('mode');
   const [mode, setMode] = useState<'local' | 'cloud' | null>(null);
-  const [baseUrl, setBaseUrl] = useState('http://localhost:8080');
+  const [baseUrl, setBaseUrl] = useState('http://127.0.0.1:5700');
   const [apiToken, setApiToken] = useState('');
 
   const handleModeSelect = (selected: 'local' | 'cloud') => {
@@ -139,7 +139,7 @@ export const OnboardingScreen: FC<Props> = ({ onComplete }) => {
                       id="baseUrl"
                       value={baseUrl}
                       onChange={(e) => setBaseUrl(e.target.value)}
-                      placeholder="http://localhost:8080"
+                      placeholder="http://127.0.0.1:5700"
                     />
                   </div>
                   <div>
