@@ -1,4 +1,4 @@
-import { SiOpenai, SiAnthropic } from '@icons-pack/react-simple-icons';
+import { SiAnthropic } from '@icons-pack/react-simple-icons';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import type { FC } from 'react';
 
@@ -8,12 +8,6 @@ interface ProviderIconProps {
 }
 
 const PROVIDER_CONFIG = {
-  openai: {
-    type: 'component' as const,
-    icon: SiOpenai,
-    color: '#10A37F',
-    name: 'OpenAI',
-  },
   anthropic: {
     type: 'component' as const,
     icon: SiAnthropic,

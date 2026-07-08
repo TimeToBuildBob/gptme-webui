@@ -4,7 +4,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
-import { CheckCircle2, Server, Cloud, Key, ArrowRight, ArrowLeft } from 'lucide-react';
+import { CheckCircle2, Server, Cloud, Key, ArrowRight, ArrowLeft, Copy } from 'lucide-react';
+import { toast } from 'sonner';
 
 type Step = 'mode' | 'local-setup' | 'complete';
 
@@ -35,6 +36,12 @@ export const OnboardingScreen: FC<Props> = ({ onComplete }) => {
   const [mode, setMode] = useState<'local' | 'cloud' | null>(null);
   const [baseUrl, setBaseUrl] = useState('http://127.0.0.1:5700');
   const [apiToken, setApiToken] = useState('');
+
+  const serverCommand = `gptme-server --cors-origin='${window.location.origin}'`;
+  const copyCommand = () => {
+    navigator.clipboard.writeText(serverCommand);
+    toast.success('Command copied to clipboard');
+  };
 
   const handleModeSelect = (selected: 'local' | 'cloud') => {
     setMode(selected);
@@ -127,9 +134,29 @@ export const OnboardingScreen: FC<Props> = ({ onComplete }) => {
               <div className="space-y-4">
                 <p className="text-sm text-muted-foreground">
                   {mode === 'local'
-                    ? 'Enter your local server details:'
+                    ? 'Start your gptme server, then enter its URL below:'
                     : 'Cloud mode coming soon - use local mode for now.'}
                 </p>
+                {mode === 'local' && (
+                  <div className="space-y-1">
+                    <label className="text-xs font-medium">Start the server with:</label>
+                    <div className="flex items-center gap-2 rounded-md bg-muted p-2">
+                      <code className="flex-1 break-all text-xs">{serverCommand}</code>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={copyCommand}
+                        className="h-7 w-7 shrink-0"
+                      >
+                        <Copy className="h-3.5 w-3.5" />
+                      </Button>
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      The <code className="rounded bg-muted px-1">--cors-origin</code> flag lets
+                      this page connect to your local server securely.
+                    </p>
+                  </div>
+                )}
                 <div className="space-y-3">
                   <div>
                     <Label htmlFor="baseUrl" className="text-xs">
