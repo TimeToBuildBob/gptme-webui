@@ -1,4 +1,4 @@
-import { Monitor, Settings, Globe, FolderOpen } from 'lucide-react';
+import { Monitor, Settings, Globe, FolderOpen, Wrench } from 'lucide-react';
 import type { FC } from 'react';
 import { rightSidebarVisible$, rightSidebarActiveTab$ } from '@/stores/sidebar';
 import { use$, useObservable } from '@legendapp/state/react';
@@ -11,6 +11,7 @@ interface Props {
 const navItems = [
   { id: 'settings', label: 'Settings', icon: Settings },
   { id: 'workspace', label: 'Workspace', icon: FolderOpen },
+  { id: 'tools', label: 'Tool Activity', icon: Wrench },
   { id: 'browser', label: 'Browser', icon: Globe },
   { id: 'computer', label: 'Computer', icon: Monitor },
 ];

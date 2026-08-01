@@ -2,6 +2,7 @@ import type { FC } from 'react';
 import { ConversationSettings } from './ConversationSettings';
 import { BrowserPreview } from './BrowserPreview';
 import { WorkspaceExplorer } from './workspace/WorkspaceExplorer';
+import { ToolActivityPanel } from './ToolActivityPanel';
 
 interface Props {
   conversationId: string;
@@ -17,6 +18,8 @@ export const RightSidebarContent: FC<Props> = ({ conversationId, activeTab }) =>
         return <ConversationSettings conversationId={conversationId} />;
       case 'workspace':
         return <WorkspaceExplorer conversationId={conversationId} />;
+      case 'tools':
+        return <ToolActivityPanel conversationId={conversationId} />;
       case 'computer':
         return (
           <iframe
